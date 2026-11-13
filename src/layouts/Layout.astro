@@ -161,6 +161,10 @@ const ogImageAlt = propsOgImageAlt ?? pageTitle;
 <html lang={siteLang} class="bg-(--page-bg) text-[14px] md:text-[16px]" data-wallpaper-mode={backgroundWallpaper.mode} data-fullscreen-layout={fullscreenLayout} data-has-wallpaper={hasWallpaper ? "" : undefined} data-tag-style={siteConfig.tagStyle ?? "pill"} data-category-style={siteConfig.categoryStyle ?? "rectangle"}>
   <head>
     <meta charset="UTF-8" />
+    <link rel="dns-prefetch" href="https://registry.npmmirror.com" />
+    <link rel="preconnect" href="https://registry.npmmirror.com" crossorigin />
+    <link rel="dns-prefetch" href="https://api.injahow.cn" />
+    <link rel="dns-prefetch" href="https://twikoo.feimy.xyz" />
     <script is:inline>
       try {
         if (localStorage.getItem("hue") === "165") localStorage.setItem("hue", "25");
