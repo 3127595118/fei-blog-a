@@ -1,0 +1,895 @@
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+		<meta name="robots" content="noindex, nofollow" />
+		<meta name="theme-color" content="#f97316" />
+		<title>写文章 · Fei'Blog</title>
+		<style>
+			:root {
+				--accent: #f97316;
+				--accent-soft: rgba(249, 115, 22, 0.12);
+				--bg: #f7f7f8;
+				--card: #ffffff;
+				--text: #1c1c1e;
+				--muted: #8a8a8e;
+				--line: #e6e6ea;
+				--radius: 14px;
+			}
+			@media (prefers-color-scheme: dark) {
+				:root {
+					--bg: #131316;
+					--card: #1c1c20;
+					--text: #f2f2f5;
+					--muted: #9a9aa2;
+					--line: #2c2c33;
+				}
+			}
+			* {
+				box-sizing: border-box;
+				-webkit-tap-highlight-color: transparent;
+			}
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				background: var(--bg);
+				color: var(--text);
+				font-family:
+					-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+					"Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+				font-size: 15px;
+				line-height: 1.6;
+			}
+			header {
+				position: sticky;
+				top: 0;
+				z-index: 10;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				padding: 12px 16px;
+				background: color-mix(in srgb, var(--bg) 88%, transparent);
+				backdrop-filter: blur(14px);
+				border-bottom: 1px solid var(--line);
+			}
+			header h1 {
+				font-size: 17px;
+				margin: 0;
+				flex: 1;
+				font-weight: 650;
+			}
+			main {
+				max-width: 760px;
+				margin: 0 auto;
+				padding: 16px 16px 96px;
+			}
+			.btn {
+				appearance: none;
+				border: 1px solid var(--line);
+				background: var(--card);
+				color: var(--text);
+				border-radius: 10px;
+				padding: 9px 14px;
+				font-size: 14px;
+				font-weight: 550;
+				cursor: pointer;
+				transition: 0.15s;
+			}
+			.btn:active {
+				transform: scale(0.97);
+			}
+			.btn.primary {
+				background: var(--accent);
+				border-color: transparent;
+				color: #fff;
+				box-shadow: 0 4px 14px rgba(249, 115, 22, 0.3);
+			}
+			.btn.ghost {
+				background: transparent;
+			}
+			.btn.danger {
+				color: #e5484d;
+				border-color: rgba(229, 72, 77, 0.35);
+			}
+			.btn:disabled {
+				opacity: 0.5;
+			}
+			.field {
+				margin-bottom: 14px;
+			}
+			.field label {
+				display: block;
+				font-size: 13px;
+				color: var(--muted);
+				margin-bottom: 6px;
+				font-weight: 550;
+			}
+			input,
+			textarea,
+			select {
+				width: 100%;
+				font: inherit;
+				color: var(--text);
+				background: var(--card);
+				border: 1px solid var(--line);
+				border-radius: 11px;
+				padding: 11px 13px;
+				outline: none;
+				transition: 0.15s;
+			}
+			input:focus,
+			textarea:focus {
+				border-color: var(--accent);
+				box-shadow: 0 0 0 3px var(--accent-soft);
+			}
+			textarea {
+				resize: vertical;
+				min-height: 320px;
+				line-height: 1.7;
+				font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+				font-size: 14px;
+			}
+			.row {
+				display: flex;
+				gap: 10px;
+			}
+			.row > * {
+				flex: 1;
+				min-width: 0;
+			}
+			.card {
+				background: var(--card);
+				border: 1px solid var(--line);
+				border-radius: var(--radius);
+				padding: 14px 16px;
+			}
+			.post-item {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				padding: 14px 4px;
+				border-bottom: 1px solid var(--line);
+				cursor: pointer;
+			}
+			.post-item:last-child {
+				border-bottom: none;
+			}
+			.post-item .meta {
+				font-size: 12px;
+				color: var(--muted);
+				margin-top: 2px;
+			}
+			.post-item .title {
+				font-weight: 600;
+				word-break: break-word;
+			}
+			.badge {
+				font-size: 11px;
+				padding: 2px 7px;
+				border-radius: 6px;
+				background: var(--accent-soft);
+				color: var(--accent);
+				font-weight: 600;
+			}
+			.badge.gray {
+				background: rgba(128, 128, 128, 0.15);
+				color: var(--muted);
+			}
+			.hidden {
+				display: none !important;
+			}
+			.bar {
+				position: fixed;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				display: flex;
+				gap: 10px;
+				padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+				background: color-mix(in srgb, var(--bg) 92%, transparent);
+				backdrop-filter: blur(14px);
+				border-top: 1px solid var(--line);
+			}
+			.bar .btn {
+				flex: 1;
+			}
+			.toast {
+				position: fixed;
+				left: 50%;
+				bottom: 92px;
+				transform: translate(-50%, 10px);
+				background: #1c1c1e;
+				color: #fff;
+				padding: 10px 16px;
+				border-radius: 10px;
+				font-size: 13px;
+				opacity: 0;
+				pointer-events: none;
+				transition: 0.2s;
+				z-index: 99;
+				max-width: 88vw;
+				text-align: center;
+			}
+			.toast.show {
+				opacity: 1;
+				transform: translate(-50%, 0);
+			}
+			.toast.error {
+				background: #b3261e;
+			}
+			.hint {
+				font-size: 12px;
+				color: var(--muted);
+				line-height: 1.7;
+			}
+			a {
+				color: var(--accent);
+			}
+			.spinner {
+				width: 16px;
+				height: 16px;
+				border: 2px solid rgba(255, 255, 255, 0.35);
+				border-top-color: #fff;
+				border-radius: 50%;
+				display: inline-block;
+				animation: spin 0.7s linear infinite;
+				vertical-align: -2px;
+			}
+			@keyframes spin {
+				to {
+					transform: rotate(360deg);
+				}
+			}
+			.cover-preview {
+				width: 100%;
+				height: 120px;
+				object-fit: cover;
+				border-radius: 11px;
+				border: 1px solid var(--line);
+				margin-top: 8px;
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<h1 id="pageTitle">写文章</h1>
+			<button class="btn ghost" id="homeBtn" style="display: none">列表</button>
+			<button class="btn ghost" id="newBtn" style="display: none">新建</button>
+		</header>
+
+		<main>
+			<section id="loginView">
+				<div class="card">
+					<div class="field">
+						<label for="tokenInput">GitHub 访问令牌（只需填一次）</label>
+						<input
+							id="tokenInput"
+							type="password"
+							placeholder="github_pat_..."
+							autocomplete="off"
+						/>
+					</div>
+					<button class="btn primary" id="loginBtn" style="width: 100%">
+						进入后台
+					</button>
+					<p class="hint" style="margin-top: 14px">
+						令牌只保存在这台设备浏览器的本地存储里，不会上传到别处。<br />
+						如果失效了，去 GitHub → Settings → Developer settings →
+						Fine-grained tokens 重新生成，权限需要 Contents: Read and write。
+					</p>
+				</div>
+			</section>
+
+			<section id="listView" class="hidden">
+				<input id="searchInput" type="search" placeholder="搜索文章标题…" />
+				<div class="card" id="postList" style="margin-top: 12px"></div>
+				<div style="display: flex; gap: 10px; margin-top: 18px">
+					<a class="btn" href="https://feimy.xyz" target="_blank" rel="noopener">打开站点</a>
+					<button class="btn danger" id="logoutBtn">退出登录</button>
+				</div>
+			</section>
+
+			<section id="editorView" class="hidden">
+				<div class="field">
+					<label for="fTitle">标题</label>
+					<input id="fTitle" type="text" placeholder="文章标题" />
+				</div>
+				<div class="row">
+					<div class="field">
+						<label for="fDate">发布日期</label>
+						<input id="fDate" type="datetime-local" />
+					</div>
+					<div class="field">
+						<label for="fCategory">分类</label>
+						<input id="fCategory" type="text" placeholder="如：生活随笔" />
+					</div>
+				</div>
+				<div class="field">
+					<label for="fTags">标签（用逗号分隔）</label>
+					<input id="fTags" type="text" placeholder="随笔, Astro" />
+				</div>
+				<div class="field">
+					<label for="fDesc">摘要</label>
+					<textarea id="fDesc" rows="2" style="min-height: 70px; font-family: inherit"></textarea>
+				</div>
+				<div class="field">
+					<label for="fImage">封面图地址（可上传）</label>
+					<input id="fImage" type="text" placeholder="/img/uploads/xxx.webp" />
+					<div style="display: flex; gap: 8px; margin-top: 8px">
+						<button class="btn" id="uploadCoverBtn" type="button">上传封面</button>
+						<label
+							style="
+								display: flex;
+								align-items: center;
+								gap: 6px;
+								font-size: 13px;
+								color: var(--muted);
+							"
+						>
+							<input id="fDraft" type="checkbox" style="width: auto" />
+							草稿
+						</label>
+					</div>
+					<img id="coverPreview" class="cover-preview hidden" alt="" />
+				</div>
+				<div class="field">
+					<label for="fBody">正文（Markdown）</label>
+					<textarea id="fBody" placeholder="开始写点什么…"></textarea>
+					<div style="display: flex; gap: 8px; margin-top: 8px">
+						<button class="btn" id="uploadBodyBtn" type="button">插入图片</button>
+						<button class="btn ghost" id="insertMoreBtn" type="button">插入摘要分隔</button>
+					</div>
+				</div>
+				<button class="btn danger" id="deleteBtn" style="width: 100%; margin-top: 6px">
+					删除这篇文章
+				</button>
+			</section>
+		</main>
+
+		<div class="bar hidden" id="saveBar">
+			<button class="btn" id="cancelBtn">返回</button>
+			<button class="btn primary" id="saveBtn">保存并发布</button>
+		</div>
+
+		<div class="toast" id="toast"></div>
+		<input type="file" id="filePicker" accept="image/*" class="hidden" />
+
+		<script>
+			const OWNER = "3127595118";
+			const REPO = "fei-blog-a";
+			const BRANCH = "main";
+			const POST_DIR = "src/content/posts";
+			const UPLOAD_DIR = "public/img/uploads";
+			const TOKEN_KEY = "fei_admin_token";
+
+			const $ = (id) => document.getElementById(id);
+			const views = {
+				login: $("loginView"),
+				list: $("listView"),
+				editor: $("editorView"),
+			};
+
+			let token = localStorage.getItem(TOKEN_KEY) || "";
+			let posts = [];
+			let editing = null; // { path, sha, fm, body }
+			let pendingUploadTarget = "cover"; // cover | body
+
+			function toast(msg, isError = false) {
+				const el = $("toast");
+				el.textContent = msg;
+				el.className = "toast show" + (isError ? " error" : "");
+				clearTimeout(el._t);
+				el._t = setTimeout(() => {
+					el.className = "toast" + (isError ? " error" : "");
+				}, 2600);
+			}
+
+			function show(name) {
+				for (const k of Object.keys(views)) {
+					views[k].classList.toggle("hidden", k !== name);
+				}
+				$("saveBar").classList.toggle("hidden", name !== "editor");
+				$("homeBtn").style.display = name === "editor" ? "" : "none";
+				$("newBtn").style.display = name === "list" ? "" : "none";
+				$("pageTitle").textContent =
+					name === "login" ? "写文章" : name === "list" ? "我的文章" : "编辑文章";
+			}
+
+			async function api(path, opts = {}) {
+				const res = await fetch("https://api.github.com" + path, {
+					...opts,
+					headers: {
+						Authorization: "Bearer " + token,
+						Accept: "application/vnd.github+json",
+						"Content-Type": "application/json",
+						...opts.headers,
+					},
+				});
+				if (res.status === 401) throw new Error("令牌无效或已过期");
+				if (res.status === 404) throw new Error("仓库或文件不存在");
+				if (!res.ok) {
+					let m = "";
+					try {
+						m = (await res.json()).message || "";
+					} catch {}
+					throw new Error(m || "请求失败 " + res.status);
+				}
+				if (res.status === 204) return null;
+				return res.json();
+			}
+
+			// ---------- base64 ----------
+			function b64encode(str) {
+				const bytes = new TextEncoder().encode(str);
+				let bin = "";
+				bytes.forEach((b) => (bin += String.fromCharCode(b)));
+				return btoa(bin);
+			}
+			function b64decode(b64) {
+				const bin = atob(b64.replace(/\s/g, ""));
+				const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
+				return new TextDecoder().decode(bytes);
+			}
+
+			// ---------- frontmatter ----------
+			function unquote(v) {
+				v = v.trim();
+				if (
+					(v.startsWith('"') && v.endsWith('"')) ||
+					(v.startsWith("'") && v.endsWith("'"))
+				) {
+					return v.slice(1, -1);
+				}
+				return v;
+			}
+
+			function parseFrontmatter(text) {
+				if (!text.startsWith("---")) return { fm: {}, body: text, order: [] };
+				const end = text.indexOf("\n---", 3);
+				if (end === -1) return { fm: {}, body: text, order: [] };
+				const head = text.slice(3, end).replace(/^\n/, "");
+				const body = text.slice(end + 4).replace(/^\n/, "");
+				const fm = {};
+				const order = [];
+				let currentKey = null;
+				for (const line of head.split("\n")) {
+					if (!line.trim()) continue;
+					const listMatch = line.match(/^\s+-\s+(.*)$/);
+					if (listMatch && currentKey) {
+						if (!Array.isArray(fm[currentKey])) fm[currentKey] = [];
+						fm[currentKey].push(unquote(listMatch[1]));
+						continue;
+					}
+					const kv = line.match(/^([A-Za-z0-9_]+):\s*(.*)$/);
+					if (!kv) continue;
+					const key = kv[1];
+					let val = kv[2].trim();
+					order.push(key);
+					currentKey = key;
+					if (val === "") {
+						fm[key] = "";
+					} else if (val === "true" || val === "false") {
+						fm[key] = val === "true";
+					} else if (/^\[.*\]$/.test(val)) {
+						fm[key] = val
+							.slice(1, -1)
+							.split(",")
+							.map((s) => unquote(s))
+							.filter(Boolean);
+					} else {
+						fm[key] = unquote(val);
+					}
+				}
+				return { fm, body, order };
+			}
+
+			function serialize(fm, body) {
+				const lines = ["---"];
+				const keys = Object.keys(fm);
+				for (const k of keys) {
+					const v = fm[k];
+					if (Array.isArray(v)) {
+						if (!v.length) {
+							lines.push(k + ": []");
+						} else {
+							lines.push(k + ":");
+							v.forEach((it) => lines.push("  - " + it));
+						}
+					} else if (typeof v === "boolean") {
+						lines.push(k + ": " + v);
+					} else {
+						lines.push(k + ": " + v);
+					}
+				}
+				lines.push("---", "");
+				return lines.join("\n") + body;
+			}
+
+			// ---------- helpers ----------
+			function toLocalInput(iso) {
+				const d = new Date(iso);
+				if (Number.isNaN(d.getTime())) return "";
+				const pad = (n) => String(n).padStart(2, "0");
+				return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+					d.getDate(),
+				)}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+			}
+
+			function fromLocalInput(val) {
+				const d = new Date(val);
+				const pad = (n) => String(n).padStart(2, "0");
+				const off = -d.getTimezoneOffset();
+				const sign = off >= 0 ? "+" : "-";
+				const oh = pad(Math.floor(Math.abs(off) / 60));
+				const om = pad(Math.abs(off) % 60);
+				return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+					d.getDate(),
+				)}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(
+					d.getSeconds(),
+				)}${sign}${oh}:${om}`;
+			}
+
+			function slugify(title) {
+				return (
+					title
+						.trim()
+						.replace(/[\\/:*?"<>|#%{}^~[\]]/g, "")
+						.replace(/\s+/g, "-")
+						.slice(0, 60) || "untitled-" + Date.now()
+				);
+			}
+
+			// ---------- list ----------
+			async function loadPosts() {
+				const list = await api(
+					`/repos/${OWNER}/${REPO}/contents/${POST_DIR}?ref=${BRANCH}`,
+				);
+				posts = list.filter((f) => /\.(md|mdx)$/i.test(f.name));
+				const loaded = await Promise.all(
+					posts.map(async (p) => {
+						try {
+							const file = await api(
+								`/repos/${OWNER}/${REPO}/contents/${p.path}?ref=${BRANCH}`,
+							);
+							const text = b64decode(file.content);
+							const { fm } = parseFrontmatter(text);
+							return { ...p, title: fm.title || p.name, date: fm.published || "", draft: fm.draft === true || fm.draft === "true" };
+						} catch {
+							return { ...p, title: p.name, date: "", draft: false };
+						}
+					}),
+				);
+				posts = loaded.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+				renderPosts();
+			}
+
+			function renderPosts() {
+				const q = $("searchInput").value.trim().toLowerCase();
+				const box = $("postList");
+				box.textContent = "";
+				const filtered = posts.filter(
+					(p) =>
+						!q ||
+						p.title.toLowerCase().includes(q) ||
+						p.name.toLowerCase().includes(q),
+				);
+				if (!filtered.length) {
+					const empty = document.createElement("p");
+					empty.className = "hint";
+					empty.textContent = q ? "没有匹配的文章" : "还没有文章，点右上角「新建」";
+					box.appendChild(empty);
+					return;
+				}
+				for (const p of filtered) {
+					const item = document.createElement("div");
+					item.className = "post-item";
+
+					const text = document.createElement("div");
+					text.style.flex = "1";
+					text.style.minWidth = "0";
+
+					const title = document.createElement("div");
+					title.className = "title";
+					title.textContent = p.title;
+
+					const meta = document.createElement("div");
+					meta.className = "meta";
+					meta.textContent = (p.date || "未设置日期").toString().slice(0, 10);
+
+					text.append(title, meta);
+					item.appendChild(text);
+
+					if (p.draft) {
+						const b = document.createElement("span");
+						b.className = "badge gray";
+						b.textContent = "草稿";
+						item.appendChild(b);
+					}
+
+					item.addEventListener("click", () => openPost(p.path));
+					box.appendChild(item);
+				}
+			}
+
+			// ---------- editor ----------
+			async function openPost(path) {
+				try {
+					const file = await api(
+						`/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`,
+					);
+					const text = b64decode(file.content);
+					const { fm, body } = parseFrontmatter(text);
+					editing = { path, sha: file.sha, fm, body };
+					fillEditor();
+					show("editor");
+				} catch (e) {
+					toast(e.message, true);
+				}
+			}
+
+			function newPost() {
+				const now = new Date();
+				editing = {
+					path: null,
+					sha: null,
+					fm: {
+						title: "",
+						published: fromLocalInput(toLocalInput(now.toISOString())),
+						draft: false,
+						description: "",
+						image: "",
+						tags: [],
+						category: "",
+						lang: "zh-CN",
+						pinned: false,
+					},
+					body: "",
+				};
+				fillEditor();
+				show("editor");
+				setTimeout(() => $("fTitle").focus(), 60);
+			}
+
+			function fillEditor() {
+				const fm = editing.fm;
+				$("fTitle").value = fm.title || "";
+				$("fDate").value = toLocalInput(fm.published || new Date().toISOString());
+				$("fCategory").value = fm.category || "";
+				$("fTags").value = Array.isArray(fm.tags) ? fm.tags.join(", ") : fm.tags || "";
+				$("fDesc").value = fm.description || "";
+				$("fImage").value = fm.image || "";
+				$("fDraft").checked = fm.draft === true || fm.draft === "true";
+				$("fBody").value = editing.body || "";
+				$("deleteBtn").style.display = editing.path ? "" : "none";
+				updateCoverPreview();
+			}
+
+			function updateCoverPreview() {
+				const url = $("fImage").value.trim();
+				const img = $("coverPreview");
+				if (url) {
+					img.src = url.startsWith("http") ? url : "https://feimy.xyz" + url;
+					img.classList.remove("hidden");
+					img.onerror = () => img.classList.add("hidden");
+				} else {
+					img.classList.add("hidden");
+				}
+			}
+
+			function collect() {
+				const fm = { ...editing.fm };
+				fm.title = $("fTitle").value.trim() || "未命名";
+				fm.published = $("fDate").value
+					? fromLocalInput($("fDate").value)
+					: fromLocalInput(new Date().toISOString());
+				fm.draft = $("fDraft").checked;
+				const desc = $("fDesc").value.trim();
+				if (desc) fm.description = desc;
+				else delete fm.description;
+				const img = $("fImage").value.trim();
+				if (img) fm.image = img;
+				else delete fm.image;
+				const tags = $("fTags")
+					.value.split(/[,，]/)
+					.map((s) => s.trim())
+					.filter(Boolean);
+				if (tags.length) fm.tags = tags;
+				else delete fm.tags;
+				const cat = $("fCategory").value.trim();
+				if (cat) fm.category = cat;
+				else delete fm.category;
+				return { fm, body: $("fBody").value };
+			}
+
+			async function save() {
+				const { fm, body } = collect();
+				if (!editing.path && !fm.title.trim()) {
+					toast("先填个标题", true);
+					return;
+				}
+				const path = editing.path || `${POST_DIR}/${slugify(fm.title)}.md`;
+				const content = b64encode(serialize(fm, body));
+				const btn = $("saveBtn");
+				btn.disabled = true;
+				btn.innerHTML = '<span class="spinner"></span> 保存中';
+				try {
+					const payload = {
+						message: (editing.path ? "docs: 更新《" : "docs: 新建《") + fm.title + "》",
+						content,
+						branch: BRANCH,
+					};
+					if (editing.sha) payload.sha = editing.sha;
+					const res = await api(
+						`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(path).replace(/%2F/g, "/")}`,
+						{ method: "PUT", body: JSON.stringify(payload) },
+					);
+					editing.path = path;
+					editing.sha = res.content.sha;
+					editing.fm = fm;
+					editing.body = body;
+					toast("已提交，几分钟后自动上线");
+					await loadPosts();
+					show("list");
+				} catch (e) {
+					toast(e.message, true);
+				} finally {
+					btn.disabled = false;
+					btn.textContent = "保存并发布";
+				}
+			}
+
+			async function remove() {
+				if (!editing.path) return;
+				if (!confirm("确定删除《" + (editing.fm.title || editing.path) + "》？")) return;
+				try {
+					await api(
+						`/repos/${OWNER}/${REPO}/contents/${encodeURIComponent(editing.path).replace(/%2F/g, "/")}`,
+						{
+							method: "DELETE",
+							body: JSON.stringify({
+								message: "docs: 删除《" + (editing.fm.title || "") + "》",
+								sha: editing.sha,
+								branch: BRANCH,
+							}),
+						},
+					);
+					toast("已删除");
+					editing = null;
+					await loadPosts();
+					show("list");
+				} catch (e) {
+					toast(e.message, true);
+				}
+			}
+
+			// ---------- upload ----------
+			async function uploadImage(file, target) {
+				const ext = (file.name.split(".").pop() || "webp").toLowerCase();
+				const safe = file.name
+					.replace(/\.[^.]+$/, "")
+					.replace(/[^\w\u4e00-\u9fa5-]+/g, "-")
+					.slice(0, 40);
+				const name = `${Date.now()}-${safe || "img"}.${ext}`;
+				const path = `${UPLOAD_DIR}/${name}`;
+				const buf = await file.arrayBuffer();
+				const bytes = new Uint8Array(buf);
+				let bin = "";
+				for (let i = 0; i < bytes.length; i += 0x8000) {
+					bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+				}
+				const b64 = btoa(bin);
+				toast("上传中…");
+				await api(`/repos/${OWNER}/${REPO}/contents/${path}`, {
+					method: "PUT",
+					body: JSON.stringify({
+						message: "chore: 上传图片 " + name,
+						content: b64,
+						branch: BRANCH,
+					}),
+				});
+				const url = "/img/uploads/" + name;
+				if (target === "cover") {
+					$("fImage").value = url;
+					updateCoverPreview();
+				} else {
+					const ta = $("fBody");
+					const pos = ta.selectionStart ?? ta.value.length;
+					const md = `![${safe || "图片"}](${url})`;
+					ta.value = ta.value.slice(0, pos) + md + ta.value.slice(pos);
+					ta.focus();
+					ta.selectionStart = ta.selectionEnd = pos + md.length;
+				}
+				toast("上传完成");
+			}
+
+			// ---------- events ----------
+			$("loginBtn").addEventListener("click", async () => {
+				const val = $("tokenInput").value.trim();
+				if (!val) return toast("请先粘贴令牌", true);
+				token = val;
+				const btn = $("loginBtn");
+				btn.disabled = true;
+				btn.innerHTML = '<span class="spinner"></span> 验证中';
+				try {
+					await api(`/repos/${OWNER}/${REPO}`);
+					localStorage.setItem(TOKEN_KEY, token);
+					await loadPosts();
+					show("list");
+				} catch (e) {
+					token = "";
+					toast(e.message, true);
+				} finally {
+					btn.disabled = false;
+					btn.textContent = "进入后台";
+				}
+			});
+
+			$("logoutBtn").addEventListener("click", () => {
+				localStorage.removeItem(TOKEN_KEY);
+				token = "";
+				posts = [];
+				editing = null;
+				$("tokenInput").value = "";
+				show("login");
+			});
+
+			$("newBtn").addEventListener("click", newPost);
+			$("homeBtn").addEventListener("click", () => {
+				editing = null;
+				show("list");
+			});
+			$("cancelBtn").addEventListener("click", () => {
+				editing = null;
+				show("list");
+			});
+			$("saveBtn").addEventListener("click", save);
+			$("deleteBtn").addEventListener("click", remove);
+			$("searchInput").addEventListener("input", renderPosts);
+			$("fImage").addEventListener("change", updateCoverPreview);
+
+			$("uploadCoverBtn").addEventListener("click", () => {
+				pendingUploadTarget = "cover";
+				$("filePicker").click();
+			});
+			$("uploadBodyBtn").addEventListener("click", () => {
+				pendingUploadTarget = "body";
+				$("filePicker").click();
+			});
+			$("filePicker").addEventListener("change", async (e) => {
+				const file = e.target.files && e.target.files[0];
+				e.target.value = "";
+				if (!file) return;
+				try {
+					await uploadImage(file, pendingUploadTarget);
+				} catch (err) {
+					toast(err.message || "上传失败", true);
+				}
+			});
+			$("insertMoreBtn").addEventListener("click", () => {
+				const ta = $("fBody");
+				const pos = ta.selectionStart ?? ta.value.length;
+				const text = "\n<!-- more -->\n";
+				ta.value = ta.value.slice(0, pos) + text + ta.value.slice(pos);
+				ta.focus();
+				ta.selectionStart = ta.selectionEnd = pos + text.length;
+			});
+
+			// ---------- boot ----------
+			(async () => {
+				if (!token) return show("login");
+				try {
+					await api(`/repos/${OWNER}/${REPO}`);
+					await loadPosts();
+					show("list");
+				} catch {
+					localStorage.removeItem(TOKEN_KEY);
+					token = "";
+					show("login");
+				}
+			})();
+		</script>
+	</body>
+</html>
