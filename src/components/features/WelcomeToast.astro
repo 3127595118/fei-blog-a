@@ -1,0 +1,210 @@
+---
+// 首页欢迎贴片：右上角滑入，显示来自 IP 归属地的问候
+---
+
+<style is:global>
+	#fei-welcome-toast {
+		position: fixed;
+		top: 5rem;
+		right: 1rem;
+		z-index: 50;
+		transform: translateY(-150%);
+		opacity: 0;
+		pointer-events: none;
+		transition: all 0.5s ease-out;
+	}
+	#fei-welcome-toast.is-show {
+		transform: translateY(0);
+		opacity: 1;
+		pointer-events: auto;
+	}
+	#fei-welcome-toast .fei-wt-card {
+		background: #fff;
+		border: 1px solid #e5e7eb;
+		border-radius: 0.5rem;
+		box-shadow:
+			0 10px 15px -3px rgb(0 0 0 / 0.1),
+			0 4px 6px -4px rgb(0 0 0 / 0.1);
+		padding: 1rem;
+		max-width: 20rem;
+	}
+	html.dark #fei-welcome-toast .fei-wt-card {
+		background: #27272a;
+		border-color: #3f3f46;
+	}
+	#fei-welcome-toast .fei-wt-inner {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.75rem;
+	}
+	#fei-welcome-toast .fei-wt-emoji {
+		flex: none;
+		font-size: 1.5rem;
+		line-height: 1;
+	}
+	#fei-welcome-toast .fei-wt-body {
+		flex: 1;
+		min-width: 0;
+	}
+	#fei-welcome-toast #fei-welcome-message {
+		margin: 0;
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: #111827;
+	}
+	html.dark #fei-welcome-toast #fei-welcome-message {
+		color: #f4f4f5;
+	}
+	#fei-welcome-toast .fei-wt-sub {
+		margin: 0.5rem 0 0;
+		font-size: 0.75rem;
+		font-style: italic;
+		color: #4b5563;
+	}
+	html.dark #fei-welcome-toast .fei-wt-sub {
+		color: #a1a1aa;
+	}
+	#fei-welcome-toast .fei-wt-close {
+		flex: none;
+		padding: 0;
+		border: none;
+		background: none;
+		line-height: 0;
+		cursor: pointer;
+		color: #9ca3af;
+		transition: color 0.2s;
+	}
+	#fei-welcome-toast .fei-wt-close:hover {
+		color: #1f2937;
+	}
+	html.dark #fei-welcome-toast .fei-wt-close:hover {
+		color: #e4e4e7;
+	}
+</style>
+
+<script is:inline>
+	(() => {
+		// 30 分钟内只弹一次
+		const KEY = "fei_welcome_toast_last_show";
+		const COOLDOWN = 30 * 60 * 1000;
+		let shown = false;
+
+		const inCooldown = () => {
+			try {
+				const last = localStorage.getItem(KEY);
+				return last ? Date.now() - parseInt(last, 10) < COOLDOWN : false;
+			} catch (e) {
+				return false;
+			}
+		};
+		const markShown = () => {
+			try {
+				localStorage.setItem(KEY, Date.now().toString());
+			} catch (e) {}
+		};
+		const isHome = () =>
+			window.location.pathname === "/" || window.location.pathname === "/index.html";
+
+		const build = () => {
+			const el = document.createElement("div");
+			el.id = "fei-welcome-toast";
+			el.innerHTML = `
+				<div class="fei-wt-card">
+					<div class="fei-wt-inner">
+						<div class="fei-wt-emoji">🙂</div>
+						<div class="fei-wt-body">
+							<p id="fei-welcome-message">正在加载...</p>
+							<p class="fei-wt-sub">欢迎来到 Fei 的小站呀~</p>
+						</div>
+						<button type="button" class="fei-wt-close" aria-label="关闭">
+							<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+							</svg>
+						</button>
+					</div>
+				</div>`;
+			document.body.appendChild(el);
+			el.querySelector(".fei-wt-close").addEventListener("click", hide);
+			return el;
+		};
+
+		function hide() {
+			const el = document.getElementById("fei-welcome-toast");
+			if (el) {
+				el.classList.remove("is-show");
+				setTimeout(() => el.remove(), 500);
+			}
+			markShown();
+		}
+
+		const jsonp = (url) =>
+			new Promise((resolve, reject) => {
+				const cb = "fei_wt_cb_" + Date.now() + "_" + Math.random().toString(36).slice(2, 8);
+				const script = document.createElement("script");
+				script.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb;
+				script.async = true;
+				const timer = setTimeout(() => {
+					delete window[cb];
+					script.remove();
+					reject(new Error("timeout"));
+				}, 10000);
+				window[cb] = (data) => {
+					clearTimeout(timer);
+					delete window[cb];
+					script.remove();
+					resolve(data);
+				};
+				script.onerror = () => {
+					clearTimeout(timer);
+					delete window[cb];
+					script.remove();
+					reject(new Error("network"));
+				};
+				document.body.appendChild(script);
+			});
+
+		const fetchLocation = async () => {
+			// 腾讯地图 IP 定位（含区县），失败再退回 ipwho.is
+			try {
+				const data = await jsonp(
+					"https://apis.map.qq.com/ws/location/v1/ip?key=K2ABZ-XLVWW-NZNRD-3S5ST-QDHU5-LHFOI&output=jsonp",
+				);
+				const ad = data && data.status === 0 && data.result && data.result.ad_info;
+				if (ad) {
+					const loc = [ad.nation, ad.province, ad.city, ad.district]
+						.filter(Boolean)
+						.join(" ");
+					if (loc) return loc;
+				}
+			} catch (e) {}
+			try {
+				const data = await (await fetch("https://ipwho.is/?lang=zh-CN")).json();
+				if (data && data.success !== false) {
+					return [data.country, data.region, data.city]
+						.filter((v, i, arr) => v && arr.indexOf(v) === i)
+						.join(" ");
+				}
+			} catch (e) {}
+			return "";
+		};
+
+		const run = async () => {
+			if (shown || inCooldown() || !isHome()) return;
+			shown = true;
+			const el = build();
+			setTimeout(() => el.classList.add("is-show"), 100);
+			const loc = await fetchLocation();
+			const msg = document.getElementById("fei-welcome-message");
+			if (msg) msg.textContent = loc ? `你好，来自${loc}的朋友` : "你好呀！";
+			setTimeout(hide, 5000);
+		};
+
+		if (document.readyState === "loading") {
+			document.addEventListener("DOMContentLoaded", run);
+			document.addEventListener("astro:page-load", run);
+		} else {
+			run();
+			document.addEventListener("astro:page-load", run);
+		}
+	})();
+	</script>

@@ -1,0 +1,15 @@
+{
+  "site": "china",
+  "token": "bee5f9e92c2f13fb2437fd5724856909",
+  "tokenExpired": "1794558529",
+  "projectName": "fei-blog-7exklrrm",
+  "targetPath": "bee5f9e92c2f13fb2437fd5724856909/fei-blog-7exklrrm/1794554929870",
+  "bucket": "eop-trans-sh-prod-1256816668",
+  "region": "ap-shanghai",
+  "cosExpiredTime": 1794556729,
+  "cosExpiration": "2026-11-13T07:58:49Z",
+  "createdAt": "2026-11-13T07:28:50.154Z",
+  "projectId": "makers-t31tttko4tcj",
+  "deploymentId": "dptqgucglv3f",
+  "siteUrl": "https://fei-blog-7exklrrm-jsdzflpk.edgeone.cool?eo_token=6d81aab563147ac62b7b1eae83df25a6&eo_time=1794554953"
+}

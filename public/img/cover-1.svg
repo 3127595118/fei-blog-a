@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="springSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffe3ee"/>
+      <stop offset="55%" stop-color="#ffc2d8"/>
+      <stop offset="100%" stop-color="#f79ab8"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#fff7d6" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#fff7d6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#springSky)"/>
+  <circle cx="900" cy="180" r="180" fill="url(#sun)"/>
+  <circle cx="900" cy="180" r="72" fill="#fffaf0"/>
+  <path d="M0 620 Q300 560 600 610 T1200 600 L1200 800 L0 800 Z" fill="#e98aa8" opacity="0.55"/>
+  <path d="M0 690 Q300 640 600 680 T1200 670 L1200 800 L0 800 Z" fill="#d96f95" opacity="0.6"/>
+  <g stroke="#6b4a52" stroke-width="9" fill="none" stroke-linecap="round">
+    <path d="M-20 250 Q120 290 210 210"/>
+    <path d="M150 230 Q200 160 260 150"/>
+    <path d="M40 300 Q120 340 190 400"/>
+  </g>
+  <g fill="#ffd7e6">
+    <circle cx="205" cy="208" r="22"/><circle cx="232" cy="188" r="16"/><circle cx="182" cy="186" r="15"/>
+    <circle cx="256" cy="148" r="20"/><circle cx="282" cy="166" r="13"/><circle cx="240" cy="128" r="12"/>
+    <circle cx="192" cy="398" r="20"/><circle cx="216" cy="420" r="14"/><circle cx="170" cy="420" r="13"/>
+  </g>
+  <g fill="#fff0f6" opacity="0.9">
+    <circle cx="214" cy="200" r="10"/><circle cx="262" cy="156" r="9"/><circle cx="198" cy="404" r="9"/>
+  </g>
+  <g fill="#fff5f8" opacity="0.85">
+    <circle cx="420" cy="140" r="7"/><circle cx="520" cy="220" r="5"/><circle cx="640" cy="120" r="6"/>
+    <circle cx="760" cy="250" r="5"/><circle cx="360" cy="300" r="6"/><circle cx="560" cy="330" r="4"/>
+    <circle cx="1020" cy="320" r="6"/><circle cx="1100" cy="220" r="5"/>
+  </g>
+</svg>
