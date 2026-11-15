@@ -25,10 +25,10 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 	// 标签
 	links.push(LinkPresets.Tags);
 
-	// 薄肌训练分区
+	// 薄肌训练计划
 	links.push({
-		name: "薄肌训练",
-		url: "/archive/?category=%E8%96%84%E8%82%8C%E8%AE%AD%E7%BB%83",
+		name: "训练",
+		url: "/fitness/",
 		icon: "material-symbols:fitness-center",
 	});
 
