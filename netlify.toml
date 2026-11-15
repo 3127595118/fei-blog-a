@@ -5,6 +5,15 @@
 [build.environment]
   NODE_VERSION = "24"
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "zisi"
+
+[[redirects]]
+  from = "/api/fitness"
+  to = "/.netlify/functions/fitness"
+  status = 200
+
 [[headers]]
   for = "/admin/*"
   [headers.values]

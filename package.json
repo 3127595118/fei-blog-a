@@ -68,6 +68,7 @@
     "l2d-widget": "^0.1.1",
     "marked": "^18.1.1",
     "mdast-util-to-string": "^4.0.0",
+    "mongodb": "^7.9.0",
     "pagefind": "^1.5.2",
     "pako": "^3.0.2",
     "qrcode": "^1.5.4",

@@ -17,6 +17,7 @@ const stats = [
 			<div class="flex items-center gap-3 mb-4">
 				<span class="text-2xl font-bold text-90">我的训练档案</span>
 				<span class="text-xs px-2 py-1 rounded-full bg-(--primary)/10 text-(--primary)">第 1 周</span>
+				<span id="sync-status" class="text-xs ml-auto text-30">正在连接云端…</span>
 			</div>
 			<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
 				{stats.map((s) => (
@@ -188,7 +189,10 @@ const stats = [
 
 	<script is:inline>
 		(function () {
-			var KEY = "fei-fitness-v1";
+			var LS_KEY = "fei-fitness-v1";
+			var API = "/api/fitness";
+			var API_KEY = "981e018e5da4e8140716ac039a999644540e1abf8c9e928e";
+			var pushTimer = null;
 			var PLAN = {
 				1: { type: "力量 A", name: "全身 A · 推 + 蹲", items: [["哑铃卧推", "4 × 8–12"], ["高脚杯深蹲", "4 × 10–12"], ["坐姿哑铃肩推", "3 × 8–12"], ["保加利亚分腿蹲", "3 × 8–10 / 侧"], ["死虫", "3 × 10 / 侧"]] },
 				2: { type: "有氧", name: "有氧日 · 快走", items: [["快走（能说话的速度）", "25 分钟"], ["全身拉伸", "10 分钟"], ["泡沫轴放松大腿前侧", "5 分钟"]] },
@@ -210,19 +214,98 @@ const stats = [
 
 			function load() {
 				try {
-					var d = JSON.parse(localStorage.getItem(KEY) || "{}");
+					var d = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
 					return {
 						checks: d.checks || {},
 						items: d.items || {},
 						logs: d.logs || [],
 						weights: d.weights || [],
+						updatedAt: d.updatedAt || 0,
 					};
 				} catch (e) {
-					return { checks: {}, items: {}, logs: [], weights: [] };
+					return { checks: {}, items: {}, logs: [], weights: [], updatedAt: 0 };
 				}
 			}
+			function saveLocal(s) {
+				localStorage.setItem(LS_KEY, JSON.stringify(s));
+			}
+			function setStatus(text, ok) {
+				var el = document.getElementById("sync-status");
+				if (!el) return;
+				el.textContent = text;
+				el.className = "text-xs ml-auto " + (ok ? "text-(--primary)" : "text-30");
+			}
+			function payload(s) {
+				return {
+					checks: s.checks || {},
+					items: s.items || {},
+					logs: s.logs || [],
+					weights: s.weights || [],
+				};
+			}
 			function save(s) {
-				localStorage.setItem(KEY, JSON.stringify(s));
+				s.updatedAt = Date.now();
+				saveLocal(s);
+				if (pushTimer) clearTimeout(pushTimer);
+				pushTimer = setTimeout(function () {
+					pushState(s);
+				}, 900);
+			}
+			function pushState(s) {
+				return fetch(API, {
+					method: "POST",
+					headers: { "Content-Type": "application/json", "x-fitness-key": API_KEY },
+					body: JSON.stringify({ state: payload(s), updatedAt: s.updatedAt }),
+				})
+					.then(function (r) {
+						return r.json();
+					})
+					.then(function (d) {
+						if (!d.ok) throw new Error(d.error || "sync failed");
+						s.updatedAt = d.updatedAt;
+						saveLocal(s);
+						setStatus("已同步 · " + new Date(d.updatedAt).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" }), true);
+					})
+					.catch(function () {
+						setStatus("未同步，已存本机", false);
+					});
+			}
+			function renderAll(s) {
+				renderToday(s);
+				renderWeek(s);
+				renderLogs(s);
+				renderWeights(s);
+			}
+			function pullState() {
+				return fetch(API + "?key=" + encodeURIComponent(API_KEY), {
+					headers: { "x-fitness-key": API_KEY },
+				})
+					.then(function (r) {
+						return r.json();
+					})
+					.then(function (d) {
+						if (!d.ok) throw new Error("pull failed");
+						var local = load();
+						var server = {
+							checks: (d.state && d.state.checks) || {},
+							items: (d.state && d.state.items) || {},
+							logs: (d.state && d.state.logs) || [],
+							weights: (d.state && d.state.weights) || [],
+							updatedAt: d.updatedAt || 0,
+						};
+						if (server.updatedAt > (local.updatedAt || 0)) {
+							saveLocal(server);
+							renderAll(server);
+							setStatus("已从云端同步", true);
+						} else if ((local.updatedAt || 0) > server.updatedAt) {
+							pushState(local);
+						} else {
+							setStatus("已同步", true);
+						}
+					})
+					.catch(function () {
+						setStatus("云端不可用，数据存本机", false);
+					});
 			}
 			function iso(d) {
 				var m = d.getMonth() + 1, day = d.getDate();
@@ -427,10 +510,8 @@ const stats = [
 
 			function init() {
 				var state = load();
-				renderToday(state);
-				renderWeek(state);
-				renderLogs(state);
-				renderWeights(state);
+				renderAll(state);
+				pullState();
 
 				var sel = document.getElementById("log-exercise");
 				if (sel && sel.options.length <= 1) {
