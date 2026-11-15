@@ -4,7 +4,7 @@ published: 2026-11-12T20:30:00+08:00
 updated: 2026-11-12T21:00:00+08:00
 draft: false
 description: 记录 Butterfly 主题的常用配置项，方便以后查阅。
-image: /img/covers/butterfly-custom.webp
+image: https://free.picui.cn/free/508/2026/11/15/6af9a96538b50.webp
 tags:
   - Hexo
   - Butterfly

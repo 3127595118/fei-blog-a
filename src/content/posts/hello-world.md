@@ -4,7 +4,7 @@ published: 2026-11-13T10:00:00+08:00
 updated: 2026-11-13T10:00:00+08:00
 draft: false
 description: 博客的第一篇文章，简单记录一下搭建 Hexo + Butterfly 博客的过程。
-image: /img/covers/hello-world.webp
+image: https://free.picui.cn/free/508/2026/11/15/6af9a9672ccb2.webp
 tags:
   - Hexo
   - 随笔

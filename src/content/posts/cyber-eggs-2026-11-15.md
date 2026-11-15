@@ -4,7 +4,7 @@ published: 2026-11-15T09:00:00+08:00
 updated: 2026-11-15T09:00:00+08:00
 draft: false
 description: 每天薅一遍互联网的羊毛：本周 Epic 喜加一是《信使》，另有七牛云 Conatus 每日 1 亿 Token、智谱邀请返 Token 等免费额度。
-image: /img/covers/cyber-eggs-2026-11-15.webp
+image: https://free.picui.cn/free/508/2026/11/15/6af9a96682ede.webp
 tags:
   - 赛博鸡蛋
   - 免费游戏
