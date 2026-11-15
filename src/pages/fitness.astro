@@ -286,6 +286,15 @@ const stats = [
 					.then(function (d) {
 						if (!d.ok) throw new Error("pull failed");
 						var local = load();
+						// 旧版本存在本机、但还没有同步时间戳：以本机数据为准先上传
+						if (
+							!local.updatedAt &&
+							(local.logs.length || local.weights.length || Object.keys(local.checks).length || Object.keys(local.items).length)
+						) {
+							save(local);
+							setStatus("正在上传本机数据…", true);
+							return;
+						}
 						var server = {
 							checks: (d.state && d.state.checks) || {},
 							items: (d.state && d.state.items) || {},
