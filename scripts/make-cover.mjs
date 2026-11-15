@@ -49,10 +49,16 @@ const svg = `
 <svg width="${W}" height="${H}" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="rgba(0,0,0,0.45)"/>
+      <feDropShadow dx="0" dy="6" stdDeviation="14" flood-color="rgba(0,0,0,0.55)"/>
     </filter>
+    <radialGradient id="vignette" cx="50%" cy="50%" r="62%">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.34)"/>
+      <stop offset="70%" stop-color="rgba(0,0,0,0.14)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0.06)"/>
+    </radialGradient>
   </defs>
-  <rect width="${W}" height="${H}" fill="rgba(0,0,0,0.18)"/>
+  <rect width="${W}" height="${H}" fill="rgba(0,0,0,0.14)"/>
+  <rect width="${W}" height="${H}" fill="url(#vignette)"/>
   <g filter="url(#shadow)" text-anchor="middle"
      font-family="${FONT}" font-weight="900" fill="#ffffff">
     ${lines
