@@ -50,3 +50,4 @@ package/
 
 # Local Netlify folder
 .netlify
+.edgeone
