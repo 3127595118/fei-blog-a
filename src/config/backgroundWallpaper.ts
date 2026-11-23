@@ -38,13 +38,13 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	src: {
 		// 桌面背景图片（本地压缩版，每次刷新随机显示一张）
 		desktop: [
-			"https://free.picui.cn/free/508/2026/11/15/6af9a967ca015.webp",
-			"https://free.picui.cn/free/508/2026/11/15/6af9a96877b3a.webp",
-			"https://free.picui.cn/free/508/2026/11/15/6af9a9693265e.webp",
-			"https://free.picui.cn/free/508/2026/11/15/6af9a969d4900.webp",
+			"/assets/images/ext/a0626d92db8c.webp",
+			"/assets/images/ext/1d1a7406410b.webp",
+			"/assets/images/ext/d3d69a7812f8.webp",
+			"/assets/images/ext/a4aa0357533f.webp",
 		],
 		// 移动背景图片（本地压缩版，每次刷新随机显示一张）
-		mobile: ["https://free.picui.cn/free/508/2026/11/15/6af9a96a95b4e.webp", "https://free.picui.cn/free/508/2026/11/15/6af9a96b52272.webp"],
+		mobile: ["/assets/images/ext/66d7de6cb52d.webp", "/assets/images/ext/2d4b111672d2.webp"],
 		// 背景视频播放地址
 		// 支持单个视频路径（字符串）或多个视频循环（数组，参考上面壁纸配置）
 		// 支持远程视频URL，本地视频请放在 public/assets/videos/ 目录下

@@ -4,7 +4,7 @@ published: 2026-11-10T18:20:00+08:00
 updated: 2026-11-10T18:20:00+08:00
 draft: false
 description: 一个普通的周末下午，聊聊最近的近况。
-image: https://free.picui.cn/free/508/2026/11/15/6af9a965d44da.webp
+image: /assets/images/ext/51a85146118a.webp
 tags:
   - 生活
   - 咖啡
