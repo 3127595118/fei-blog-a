@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#05070d" />
+<title>赛博鸡蛋 · 免费 AI 福利每日核验</title>
+<style>
+:root{
+  --bg:#05070d;--panel:#0a1120;--panel2:#0d1626;--line:#1a2740;--txt:#e6ecf7;--dim:#7d8aa3;
+  --neon:#5cf2ff;--pink:#ff4d8d;--amber:#ffb64d;--green:#4ade80;--violet:#b06bff;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{
+  background:radial-gradient(900px 460px at 50% -8%,#10203a 0,transparent 62%),
+             radial-gradient(700px 380px at 92% 108%,#1d0f2c 0,transparent 60%),var(--bg);
+  color:var(--txt);min-height:100vh;padding:16px 13px 44px;
+  font:14px/1.6 ui-monospace,"SF Mono",Menlo,Consolas,"Noto Sans Mono CJK SC",monospace;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(rgba(92,242,255,.05) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(92,242,255,.05) 1px,transparent 1px);
+  background-size:34px 34px;
+  -webkit-mask-image:radial-gradient(circle at 50% 18%,#000 22%,transparent 78%);
+  mask-image:radial-gradient(circle at 50% 18%,#000 22%,transparent 78%);
+}
+.wrap{position:relative;z-index:1;max-width:720px;margin:0 auto}
+
+/* header */
+header{text-align:center;padding:8px 0 4px}
+h1{margin:6px 0 4px;font-size:25px;letter-spacing:.2em;color:#fff;
+   text-shadow:0 0 14px rgba(92,242,255,.5),0 0 40px rgba(92,242,255,.22)}
+.tagline{color:var(--dim);font-size:11px;letter-spacing:.14em;margin:0}
+.claim{color:#61708a;font-size:11px;margin:10px auto 0;max-width:34em;line-height:1.7}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0 12px}
+.stat{border:1px solid var(--line);border-radius:13px;padding:10px 4px;text-align:center;background:var(--panel)}
+.stat b{display:block;font-size:19px;line-height:1.2}
+.stat span{font-size:9.5px;color:var(--dim);letter-spacing:.1em}
+.s-new b{color:var(--green)}.s-upd b{color:var(--neon)}.s-pen b{color:var(--amber)}.s-all b{color:#cfdcef}
+
+/* flash */
+.flash{border:1px solid #3a2033;border-left:3px solid var(--pink);background:linear-gradient(90deg,#1a0d16,#0a1120);
+       border-radius:11px;padding:9px 12px;margin:0 0 12px;font-size:12px;color:#e8c7d6}
+.flash b{color:var(--pink);font-weight:500;font-size:10px;letter-spacing:.1em;margin-right:8px}
+
+/* toolbar */
+.toolbar{position:sticky;top:0;z-index:5;background:linear-gradient(180deg,#05070df2,#05070de0);
+         backdrop-filter:blur(8px);padding:8px 0 10px;margin-bottom:4px;border-bottom:1px solid #0f1a2c}
+.search{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--line);background:#0a1322;
+        color:var(--txt);font:inherit;font-size:13px;outline:none}
+.search:focus{border-color:#2b6b8c;box-shadow:0 0 0 3px rgba(92,242,255,.08)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding:9px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:#0a1322;
+      color:#8fa0ba;font:inherit;font-size:11.5px;letter-spacing:.04em;cursor:pointer;white-space:nowrap}
+.chip.on{border-color:#2f7f9c;color:#d8f5ff;background:#0f2437;box-shadow:0 0 14px -6px var(--neon)}
+.chip .n{opacity:.55;margin-left:4px;font-size:10px}
+
+/* cards */
+.list{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.card{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:13px}
+.card.new{border-left:3px solid var(--green)}
+.card.updated{border-left:3px solid var(--neon)}
+.card.pending{border-left:3px solid var(--amber)}
+.card.ended{opacity:.55;border-left:3px solid #4a5768}
+.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:7px}
+.tag{font-size:10px;letter-spacing:.08em;padding:2.5px 7px;border-radius:6px;border:1px solid #22304a;color:#8ea2bd;background:#0c1524}
+.tag.vendor{color:#c8d8ec;border-color:#2a3a56}
+.tag.cn{color:#ffb4c8;border-color:#55303c}
+.tag.global{color:#a8c8ff;border-color:#2b3f66}
+.tag.free{color:var(--green);border-color:#255139}
+.tag.quota{color:#7fd2ff;border-color:#1f4a5e}
+.tag.discount{color:var(--amber);border-color:#584021}
+.tag.member{color:var(--violet);border-color:#3f2a63}
+.st{margin-left:auto;font-size:10px;letter-spacing:.08em;padding:2.5px 8px;border-radius:6px}
+.st.new{color:#052e16;background:var(--green)}
+.st.updated{color:#04222b;background:var(--neon)}
+.st.pending{color:#2b1b02;background:var(--amber)}
+.st.ended{color:#c3ccda;background:#2b3546}
+.st.active{color:#9fb2cc;background:#101c2e;border:1px solid #22304a}
+.card h3{margin:0 0 8px;font-size:14.5px;line-height:1.45;color:#eef4ff;font-weight:600}
+.card h3 a{color:inherit;text-decoration:none}
+.row{display:flex;gap:7px;font-size:12px;margin:5px 0;color:#9fb0c8;line-height:1.6}
+.row .k{flex:0 0 3.6em;color:#5f6f88;font-size:11px;padding-top:1px}
+.row .v{flex:1;min-width:0;word-break:break-word}
+.row .v.gets{color:#cfe4ff}
+.foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px;padding-top:9px;border-top:1px dashed #16223a;font-size:10.5px;color:#5f6f88}
+.foot a{color:#7fd2ff;text-decoration:none}
+.hist{width:100%;margin-top:6px}
+.hist summary{font-size:10.5px;color:#6b7c96;cursor:pointer;list-style:none}
+.hist summary::-webkit-details-marker{display:none}
+.hist summary::before{content:"▾ ";color:#3f5570}
+.hist ul{margin:6px 0 0;padding:0 0 0 4px;list-style:none}
+.hist li{font-size:11px;color:#8698b2;padding:3px 0;border-bottom:1px dotted #131f33}
+.hist li b{color:#5f6f88;font-weight:400;margin-right:7px}
+
+/* rank */
+section.block{border:1px solid var(--line);border-radius:15px;background:var(--panel);padding:13px;margin-top:14px}
+h2{font-size:11.5px;letter-spacing:.24em;color:#9fb2cc;margin:0 0 11px;font-weight:500}
+h2 small{color:#44546d;letter-spacing:.1em;font-size:9.5px}
+.rank{display:flex;flex-direction:column;gap:7px}
+.ritem{display:flex;align-items:center;gap:9px;font-size:12px}
+.ritem .idx{width:18px;color:#3f5570;font-size:10.5px;text-align:right}
+.ritem .bar{flex:1;height:20px;background:#0a1322;border-radius:6px;overflow:hidden;position:relative;border:1px solid #142034}
+.ritem .bar i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#1b5f7a,#2f9fc4);border-radius:6px}
+.ritem .bar span{position:absolute;left:8px;top:0;line-height:19px;color:#dff2ff;font-size:11px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;right:8px}
+.ritem .val{width:3.2em;text-align:right;color:#7fd2ff;font-size:11px}
+
+/* blog */
+.posts{display:flex;flex-direction:column;gap:8px}
+.post{display:block;text-decoration:none;border:1px solid #142034;border-radius:10px;padding:9px 11px;background:#080f1c}
+.post:hover{border-color:#2b4a6b}
+.post .t{font-size:12.5px;color:#cfe0f5;line-height:1.45}
+.post .d{font-size:10px;color:#55647c;margin-top:3px}
+.empty{color:#4f5e75;font-size:11.5px}
+
+footer{margin-top:18px;text-align:center;font-size:10px;color:#33415a;line-height:1.8;letter-spacing:.04em}
+footer a{color:#4b6a8c;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1 id="siteName">赛博鸡蛋</h1>
+    <p class="tagline" id="tagline">CYBER EGGS · 免费 AI 福利每日核验</p>
+    <p class="claim" id="claim">只写官方公开、能自己领到的东西。</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat s-new"><b id="stNew">–</b><span>今日新增</span></div>
+    <div class="stat s-upd"><b id="stUpd">–</b><span>今日变更</span></div>
+    <div class="stat s-pen"><b id="stPen">–</b><span>待核验</span></div>
+    <div class="stat s-all"><b id="stAll">–</b><span>在库</span></div>
+  </div>
+
+  <div class="flash" id="flash" hidden></div>
+
+  <div class="toolbar">
+    <input class="search" id="q" type="search" placeholder="搜厂商 / 标题 / 能拿到什么…" />
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <div class="list" id="list"></div>
+
+  <section class="block">
+    <h2>价值排行榜 <small>RANKING</small></h2>
+    <div class="rank" id="rank"></div>
+  </section>
+
+  <section class="block" id="blogBlock" hidden>
+    <h2 id="blogTitle">我的博客 <small>BLOG</small></h2>
+    <div class="posts" id="posts"></div>
+  </section>
+
+  <footer>
+    <div id="genAt">数据加载中…</div>
+    <div>条目全部来自官方公开页面，逐条核验并记录变动；核验失败会标「待核验」而不是删掉。</div>
+    <div id="blogLink"></div>
+  </footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+var DATA = null, FILTER = {region:"all", type:"all", status:"all", group:"all", q:""};
+
+function h(tag, cls, txt){
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (txt != null) e.textContent = txt;
+  return e;
+}
+function esc(s){ return String(s == null ? "" : s); }
+
+function chip(label, key, val, count){
+  var b = h("button", "chip" + (FILTER[key] === val ? " on" : ""));
+  b.appendChild(document.createTextNode(label));
+  if (count != null) { var n = h("span","n"," "+count); b.appendChild(n); }
+  b.onclick = function(){ FILTER[key] = (FILTER[key] === val && val !== "all") ? "all" : val; renderChips(); renderList(); };
+  return b;
+}
+
+function counts(field, val){
+  return DATA.deals.filter(function(d){ return d[field] === val; }).length;
+}
+
+function renderChips(){
+  var box = document.getElementById("chips");
+  box.innerHTML = "";
+  box.appendChild(chip("全部", "region", "all", DATA.deals.length));
+  box.appendChild(chip("国内", "region", "cn", counts("region","cn")));
+  box.appendChild(chip("海外", "region", "global", counts("region","global")));
+  box.appendChild(chip("免费", "type", "free", counts("type","free")));
+  box.appendChild(chip("额度", "type", "quota", counts("type","quota")));
+  box.appendChild(chip("折扣", "type", "discount", counts("type","discount")));
+  box.appendChild(chip("会员", "type", "member", counts("type","member")));
+  var s = ["new","updated","pending","ended"];
+  var names = {new:"今日新增", updated:"今日变更", pending:"待核验", ended:"已结束"};
+  for (var i=0;i<s.length;i++) box.appendChild(chip(names[s[i]], "status", s[i], counts("status", s[i])));
+}
+
+function match(d){
+  if (FILTER.region !== "all" && d.region !== FILTER.region) return false;
+  if (FILTER.type !== "all" && d.type !== FILTER.type) return false;
+  if (FILTER.status !== "all" && d.status !== FILTER.status) return false;
+  if (FILTER.group !== "all" && d.group !== FILTER.group) return false;
+  if (FILTER.q){
+    var blob = (d.vendor + " " + d.title + " " + d.gets + " " + d.cond + " " + d.deadline).toLowerCase();
+    if (blob.indexOf(FILTER.q.toLowerCase()) < 0) return false;
+  }
+  return true;
+}
+
+function card(d){
+  var c = h("div", "card " + d.status);
+  var meta = h("div", "meta");
+  meta.appendChild(h("span", "tag vendor", d.vendor));
+  meta.appendChild(h("span", "tag " + (d.region === "cn" ? "cn" : "global"), d.region_label));
+  meta.appendChild(h("span", "tag " + d.type, d.type_label));
+  var st = h("span", "st " + d.status, d.status_label);
+  meta.appendChild(st);
+  c.appendChild(meta);
+
+  var t = h("h3");
+  var a = h("a", null, d.title);
+  a.href = d.url; a.target = "_blank"; a.rel = "noopener";
+  t.appendChild(a);
+  c.appendChild(t);
+
+  [["能拿到", d.gets, "gets"], ["条件", d.cond, ""], ["期限", d.deadline, ""]].forEach(function(r){
+    if (!r[1]) return;
+    var row = h("div", "row");
+    row.appendChild(h("span", "k", r[0]));
+    row.appendChild(h("span", "v " + r[2], r[1]));
+    c.appendChild(row);
+  });
+
+  var f = h("div", "foot");
+  var okTxt = d.check.ok ? "核验通过" : "核验异常";
+  f.appendChild(h("span", null, "核验 " + d.check.at + " · " + okTxt + " · HTTP " + d.check.http));
+  var oa = h("a", null, "官方页 ↗"); oa.href = d.url; oa.target = "_blank"; oa.rel = "noopener";
+  f.appendChild(oa);
+  var copy = h("a", null, "复制标题"); copy.href = "javascript:void(0)";
+  copy.onclick = function(ev){
+    ev.preventDefault();
+    var txt = d.vendor + " · " + d.title + "\n" + d.gets + "\n" + d.url;
+    if (navigator.clipboard) navigator.clipboard.writeText(txt);
+  };
+  f.appendChild(copy);
+  c.appendChild(f);
+
+  if (d.history && d.history.length){
+    var det = h("details", "hist");
+    det.appendChild(h("summary", null, "变更记录 " + d.history.length));
+    var ul = h("ul");
+    d.history.forEach(function(x){
+      var li = h("li");
+      li.appendChild(h("b", null, x.date));
+      li.appendChild(document.createTextNode(x.note));
+      ul.appendChild(li);
+    });
+    det.appendChild(ul);
+    c.appendChild(det);
+  }
+  return c;
+}
+
+function renderList(){
+  var box = document.getElementById("list");
+  box.innerHTML = "";
+  var items = DATA.deals.filter(match);
+  if (!items.length){ box.appendChild(h("div", "empty", "没有匹配的条目，换个筛选条件。")); return; }
+  items.forEach(function(d){ box.appendChild(card(d)); });
+}
+
+function renderRank(){
+  var box = document.getElementById("rank");
+  box.innerHTML = "";
+  var max = 0;
+  DATA.deals.forEach(function(d){ if (d.value > max) max = d.value; });
+  DATA.deals.slice(0, 12).forEach(function(d, i){
+    var r = h("div", "ritem");
+    r.appendChild(h("span", "idx", String(i + 1).padStart(2, "0")));
+    var bar = h("div", "bar");
+    var fill = h("i");
+    fill.style.width = Math.max(6, (d.value / (max || 1)) * 100) + "%";
+    bar.appendChild(fill);
+    bar.appendChild(h("span", null, d.vendor + " · " + d.title));
+    r.appendChild(bar);
+    r.appendChild(h("span", "val", Number(d.value).toFixed(1)));
+    r.onclick = function(){ FILTER.group = d.group; FILTER.status = "all"; FILTER.region="all"; FILTER.type="all"; renderChips(); renderList(); window.scrollTo({top:0,behavior:"smooth"}); };
+    box.appendChild(r);
+  });
+}
+
+function renderBlog(){
+  var blk = document.getElementById("blogBlock");
+  var box = document.getElementById("posts");
+  var posts = (DATA.blog && DATA.blog.posts) || [];
+  if (!posts.length){ blk.hidden = true; return; }
+  blk.hidden = false;
+  if (DATA.blog.title) document.getElementById("blogTitle").textContent = DATA.blog.title + " ";
+  box.innerHTML = "";
+  posts.forEach(function(p){
+    var a = h("a", "post"); a.href = p.link; a.target = "_blank"; a.rel = "noopener";
+    a.appendChild(h("div", "t", p.title));
+    if (p.date) a.appendChild(h("div", "d", p.date));
+    box.appendChild(a);
+  });
+  if (DATA.blog.site_url){
+    var l = document.getElementById("blogLink");
+    var a2 = h("a", null, "→ 更多文章：我的博客");
+    a2.href = DATA.blog.site_url; a2.target = "_blank"; a2.rel = "noopener";
+    l.innerHTML = ""; l.appendChild(a2);
+  }
+}
+
+function boot(){
+  var s = DATA.site || {};
+  if (s.name) document.title = s.name + " · 免费 AI 福利每日核验";
+  if (s.name) document.getElementById("siteName").textContent = s.name;
+  if (s.tagline) document.getElementById("tagline").textContent = s.tagline;
+  if (s.claim) document.getElementById("claim").textContent = s.claim;
+
+  var st = DATA.stats || {};
+  document.getElementById("stNew").textContent = st.today_new || 0;
+  document.getElementById("stUpd").textContent = st.today_updated || 0;
+  document.getElementById("stPen").textContent = st.pending || 0;
+  document.getElementById("stAll").textContent = st.total || 0;
+
+  var flash = DATA.flash || [];
+  if (flash.length){
+    var fb = document.getElementById("flash");
+    fb.hidden = false;
+    fb.innerHTML = "";
+    flash.forEach(function(f){
+      var line = h("div");
+      if (f.badge) line.appendChild(h("b", null, f.badge.toUpperCase()));
+      line.appendChild(document.createTextNode(f.title));
+      fb.appendChild(line);
+    });
+  }
+
+  document.getElementById("genAt").textContent =
+    "采集器最后运行：" + (DATA.generated_at || "未知") + " · 北京时间 · 共 " + (st.total || 0) + " 条";
+
+  renderChips();
+  renderList();
+  renderRank();
+  renderBlog();
+}
+
+document.getElementById("q").addEventListener("input", function(e){
+  FILTER.q = e.target.value.trim();
+  renderList();
+});
+
+function loadBlogConfig(){
+  return fetch("blog.config.json?t=" + Date.now(), {cache:"no-store"})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .catch(function(){ return null; });
+}
+
+function mergeBlog(cfg){
+  if (!cfg) return;
+  DATA.blog = DATA.blog || {posts: []};
+  if (cfg.site_url) DATA.blog.site_url = cfg.site_url;
+  if (cfg.rss_url && (!DATA.blog.posts || !DATA.blog.posts.length)) {
+    // 静态站不能直接跨域解析 RSS，交给采集器；这里只标记来源
+    DATA.blog.rss_url = cfg.rss_url;
+  }
+  if (cfg.title) DATA.blog.title = cfg.title;
+}
+
+fetch("data/deals.json?t=" + Date.now(), {cache:"no-store"})
+  .then(function(r){ if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+  .then(function(j){ DATA = j; return loadBlogConfig(); })
+  .then(function(cfg){ mergeBlog(cfg); boot(); })
+  .catch(function(e){
+    document.getElementById("genAt").textContent = "数据加载失败：" + e.message + "（请用 http 打开，并先跑一次 collect.py）";
+  });
+})();
+</script>
+</body>
+</html>
