@@ -1,0 +1,533 @@
+{
+  "site": {
+    "name": "赛博鸡蛋",
+    "tagline": "免费 AI 福利每日核验",
+    "claim": "只写官方公开、能自己领到的东西。领不到的不收，变了的会标出来。"
+  },
+  "blog": {
+    "kind": "rss",
+    "url": "https://feimy.xyz/atom.xml",
+    "site_url": "https://feimy.xyz",
+    "limit": 6
+  },
+  "flash": [
+    {
+      "badge": "随时下架",
+      "title": "黑五类折扣页倒计时随时归零，看到就先领再核验",
+      "link": ""
+    }
+  ],
+  "groups": [
+    {
+      "key": "free_api",
+      "label": "免费 API 榜"
+    },
+    {
+      "key": "tool",
+      "label": "工具客户端榜"
+    },
+    {
+      "key": "media",
+      "label": "多媒体生成榜"
+    },
+    {
+      "key": "paid",
+      "label": "付费低价榜"
+    },
+    {
+      "key": "id",
+      "label": "身份专享榜"
+    }
+  ],
+  "sources": [
+    {
+      "id": "agnes-free-api",
+      "vendor": "Agnes AI",
+      "title": "免费 API 访问：全模态模型 + 公平使用配额",
+      "url": "https://platform.agnes-ai.cn",
+      "region": "cn",
+      "type": "free",
+      "group": "free_api",
+      "value": 8.2,
+      "gets": "免费调用文本 / 图像 / 视频全模态模型，受 RPM 公平使用配额限制",
+      "cond": "注册 platform.agnes-ai.cn 后即可获取免费 API 访问；付费 Token 套餐另计",
+      "deadline": "官方页未写截止日",
+      "keywords": [
+        "免费",
+        "free",
+        "api"
+      ],
+      "end_keywords": [
+        "已结束",
+        "停止服务"
+      ],
+      "js_heavy": true
+    },
+    {
+      "id": "codebuddy-free-tier",
+      "vendor": "腾讯云 CodeBuddy",
+      "title": "体验版免费档：每月 500 积分 + 每月 5,000 次补全",
+      "url": "https://www.codebuddy.cn/docs/ide/Account/pricing",
+      "region": "cn",
+      "type": "quota",
+      "group": "tool",
+      "value": 7.6,
+      "gets": "每月 500 基础积分 + 每月 5,000 次代码补全（页面标「限免」的无限补全属放宽项）",
+      "cond": "用 Buddy AI 账号登录 CodeBuddy 即用体验版；开通付费会员后不再另发积分",
+      "deadline": "官方未写截止日期（常设免费档）",
+      "keywords": [
+        "免费",
+        "体验",
+        "积分"
+      ],
+      "end_keywords": [
+        "已下线",
+        "活动结束"
+      ]
+    },
+    {
+      "id": "tencent-hunyuan-free-tokens",
+      "vendor": "腾讯混元",
+      "title": "首次开通送 100 万 tokens，1 年有效",
+      "url": "https://cloud.tencent.com/product/hunyuan",
+      "region": "cn",
+      "type": "quota",
+      "group": "free_api",
+      "value": 7.0,
+      "gets": "混元生文 100 万 tokens 免费额度，1 年有效，一次性发放",
+      "cond": "需完成腾讯云个人或企业实名认证，首次开通混元服务后发放",
+      "deadline": "免费资源包有效期 1 年，自开通日起算，到期作废",
+      "keywords": [
+        "免费",
+        "token",
+        "额度"
+      ],
+      "end_keywords": [
+        "已停止",
+        "活动结束"
+      ]
+    },
+    {
+      "id": "aliyun-bailian-free-quota",
+      "vendor": "阿里云百炼",
+      "title": "新用户各模型免费额度（百万级 tokens）",
+      "url": "https://www.aliyun.com/product/bailian",
+      "region": "cn",
+      "type": "quota",
+      "group": "free_api",
+      "value": 6.8,
+      "gets": "百炼平台各模型新用户免费额度，按模型分别发放",
+      "cond": "阿里云实名账号首次开通百炼；额度按模型单独计算，用完即转按量计费",
+      "deadline": "免费额度有效期见控制台，官方常调整",
+      "keywords": [
+        "免费",
+        "额度",
+        "百炼"
+      ],
+      "end_keywords": [
+        "活动结束"
+      ]
+    },
+    {
+      "id": "volcengine-ark-free",
+      "vendor": "火山方舟",
+      "title": "每个模型 50 万 tokens 免费推理额度",
+      "url": "https://www.volcengine.com/product/ark",
+      "region": "cn",
+      "type": "quota",
+      "group": "free_api",
+      "value": 6.9,
+      "gets": "开通即送每个模型 50 万 tokens 免费额度（以控制台为准）",
+      "cond": "火山引擎实名账号开通方舟服务；额度按模型发放，需自助领取",
+      "deadline": "官方未写统一截止日，按活动页为准",
+      "keywords": [
+        "免费",
+        "tokens",
+        "额度"
+      ],
+      "end_keywords": [
+        "活动结束"
+      ],
+      "js_heavy": true
+    },
+    {
+      "id": "zhipu-glm-free",
+      "vendor": "智谱 AI",
+      "title": "GLM 免费模型线：flash 系列 0 元调用",
+      "url": "https://open.bigmodel.cn/pricing",
+      "region": "cn",
+      "type": "free",
+      "group": "free_api",
+      "value": 7.4,
+      "gets": "GLM 免费档模型（flash 系列）0 元调用，有并发与速率限制",
+      "cond": "注册开放平台并创建 API Key；免费模型单独列出，不计费",
+      "deadline": "官方未写截止日（常设免费模型）",
+      "keywords": [
+        "免费",
+        "free"
+      ],
+      "end_keywords": [
+        "已下线",
+        "已停止"
+      ],
+      "js_heavy": true
+    },
+    {
+      "id": "siliconflow-free",
+      "vendor": "硅基流动 SiliconFlow",
+      "title": "注册送额度 + 常驻免费模型",
+      "url": "https://siliconflow.cn/pricing",
+      "region": "cn",
+      "type": "quota",
+      "group": "free_api",
+      "value": 7.8,
+      "gets": "新用户注册赠送平台额度（千万级 tokens 量级）+ 部分模型标注免费",
+      "cond": "手机号注册并实名；赠送额度按活动页规则，免费模型有速率限制",
+      "deadline": "赠送额度有效期以站内提示为准",
+      "keywords": [
+        "免费",
+        "赠送",
+        "额度"
+      ],
+      "end_keywords": [
+        "活动结束"
+      ]
+    },
+    {
+      "id": "modelscope-free-inference",
+      "vendor": "魔搭 ModelScope",
+      "title": "社区模型免费 API 推理（每日调用额度）",
+      "url": "https://modelscope.cn",
+      "region": "cn",
+      "type": "free",
+      "group": "free_api",
+      "value": 6.6,
+      "gets": "绑定阿里云账号后可用免费推理 API，每日调用次数有限",
+      "cond": "注册魔搭并绑定阿里云账号；单模型每日调用上限，超限次日恢复",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "免费",
+        "推理",
+        "api"
+      ],
+      "end_keywords": [
+        "已下线",
+        "已停止提供"
+      ],
+      "js_heavy": true
+    },
+    {
+      "id": "xfyun-spark-free",
+      "vendor": "讯飞星火",
+      "title": "Spark Lite 永久免费 + 新用户 tokens 包",
+      "url": "https://xinghuo.xfyun.cn/sparkapi",
+      "region": "cn",
+      "type": "free",
+      "group": "free_api",
+      "value": 6.4,
+      "gets": "Spark Lite 模型免费调用；新用户另有 tokens 体验包",
+      "cond": "讯飞开放平台实名注册并创建应用；免费档有 QPS 限制",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "免费",
+        "token"
+      ],
+      "end_keywords": [
+        "活动结束"
+      ],
+      "js_heavy": true
+    },
+    {
+      "id": "moonshot-free-trial",
+      "vendor": "月之暗面 Kimi",
+      "title": "开放平台新用户赠送额度",
+      "url": "https://platform.moonshot.cn/docs/pricing",
+      "region": "cn",
+      "type": "quota",
+      "group": "free_api",
+      "value": 5.8,
+      "gets": "新注册账号赠送体验额度，可用于 kimi 系列模型",
+      "cond": "注册开放平台账号并实名；赠送额度一次性，用尽转充值",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "赠送",
+        "免费",
+        "额度"
+      ],
+      "end_keywords": [
+        "活动结束"
+      ]
+    },
+    {
+      "id": "gemini-free-tier",
+      "vendor": "Google Gemini",
+      "title": "AI Studio 免费层：Gemini 系列按天限流免费调",
+      "url": "https://ai.google.dev/pricing",
+      "region": "global",
+      "type": "free",
+      "group": "free_api",
+      "value": 9.2,
+      "gets": "Gemini 免费层：按模型给每日请求数与 tokens 上限，0 元",
+      "cond": "Google 账号登录 AI Studio 生成 API Key；免费层数据可能用于改进产品",
+      "deadline": "官方未写截止日（常设免费层）",
+      "keywords": [
+        "free",
+        "free tier",
+        "pricing"
+      ],
+      "end_keywords": [
+        "discontinued",
+        "no longer offered"
+      ]
+    },
+    {
+      "id": "groq-free-tier",
+      "vendor": "Groq",
+      "title": "免费层：开源大模型高速推理，按天限流",
+      "url": "https://groq.com/pricing",
+      "region": "global",
+      "type": "free",
+      "group": "free_api",
+      "value": 8.6,
+      "gets": "Free 档 0 元调用 Llama / Qwen / Kimi 等模型，按 RPM/RPD 限流",
+      "cond": "注册 GroqCloud 生成 API Key；免费档不支持部分高级模型",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "free",
+        "pricing"
+      ],
+      "end_keywords": [
+        "discontinued",
+        "no longer offered"
+      ],
+      "js_heavy": true
+    },
+    {
+      "id": "openrouter-free-models",
+      "vendor": "OpenRouter",
+      "title": "免费模型池：max_price=0 的模型可直接调",
+      "url": "https://openrouter.ai/models?max_price=0",
+      "region": "global",
+      "type": "free",
+      "group": "free_api",
+      "value": 8.0,
+      "gets": "标价 0 的模型免费调用，含社区版与厂商免费档；有每日请求上限",
+      "cond": "注册后建 Key；免费模型 RPD 受限，充值 $10 可提高上限",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "free",
+        "models"
+      ],
+      "end_keywords": [
+        "no longer free",
+        "已下架"
+      ]
+    },
+    {
+      "id": "mistral-free-tier",
+      "vendor": "Mistral",
+      "title": "La Plateforme 免费实验档（Free tier）",
+      "url": "https://mistral.ai/pricing",
+      "region": "global",
+      "type": "free",
+      "group": "free_api",
+      "value": 7.2,
+      "gets": "Free 档可用基础模型，按月限流；含免费 OCR / 嵌入额度",
+      "cond": "注册账号并验证手机号；需同意数据用于训练（免费档条件）",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "free",
+        "pricing"
+      ],
+      "end_keywords": [
+        "discontinued",
+        "no longer offered"
+      ]
+    },
+    {
+      "id": "cloudflare-workers-ai",
+      "vendor": "Cloudflare Workers AI",
+      "title": "每天 10,000 Neurons 免费额度",
+      "url": "https://developers.cloudflare.com/workers-ai/platform/pricing/",
+      "region": "global",
+      "type": "quota",
+      "group": "free_api",
+      "value": 8.4,
+      "gets": "Workers AI 免费档每天 10,000 Neurons，覆盖文本 / 图像 / 嵌入模型",
+      "cond": "Cloudflare 账号开通 Workers；额度按天重置，超出按 $0.011/1k Neurons 计费",
+      "deadline": "官方未写截止日（常设免费额度）",
+      "keywords": [
+        "free",
+        "neurons",
+        "pricing"
+      ],
+      "end_keywords": [
+        "discontinued",
+        "已下线"
+      ]
+    },
+    {
+      "id": "github-models-free",
+      "vendor": "GitHub Models",
+      "title": "GitHub 账号直接免费用 GPT / Llama 等模型",
+      "url": "https://docs.github.com/en/github-models",
+      "region": "global",
+      "type": "free",
+      "group": "free_api",
+      "value": 8.8,
+      "gets": "个人账号按分钟/天限流免费用多家模型（OpenAI / Meta / Mistral 等）",
+      "cond": "GitHub 账号 + PAT，走 models.github.ai 兼容 OpenAI 接口；限流随账号等级",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "free",
+        "rate limit"
+      ],
+      "end_keywords": [
+        "no longer available",
+        "已停止提供"
+      ]
+    },
+    {
+      "id": "nvidia-nim-free",
+      "vendor": "NVIDIA build.nvidia.com",
+      "title": "NIM 免费 credits，可直接试跑大模型",
+      "url": "https://build.nvidia.com",
+      "region": "global",
+      "type": "quota",
+      "group": "free_api",
+      "value": 7.0,
+      "gets": "注册送免费 API credits，覆盖数十个模型，兼容 OpenAI 接口",
+      "cond": "NVIDIA 开发者账号登录后生成 API Key；额度用尽需申请",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "free",
+        "api"
+      ],
+      "end_keywords": [
+        "已结束",
+        "discontinued"
+      ]
+    },
+    {
+      "id": "hf-inference-free",
+      "vendor": "Hugging Face",
+      "title": "Inference Providers 每月免费额度",
+      "url": "https://huggingface.co/pricing",
+      "region": "global",
+      "type": "quota",
+      "group": "free_api",
+      "value": 6.2,
+      "gets": "免费账号每月少量 inference credits，可用多家推理提供商",
+      "cond": "HF 账号建 token；免费额度按账户，PRO 账号额度更高",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "free",
+        "credits"
+      ],
+      "end_keywords": [
+        "discontinued"
+      ]
+    },
+    {
+      "id": "krea-black-friday",
+      "vendor": "Krea",
+      "title": "黑五生成式模型折扣（限时，随时结束）",
+      "url": "https://www.krea.ai/pricing",
+      "region": "global",
+      "type": "discount",
+      "group": "media",
+      "value": 5.5,
+      "gets": "Seedance 等生成模型最高省 75%（按订阅档不同）",
+      "cond": "注册 Krea 并订阅对应档位；折扣随 Basic / Pro / Max 不一致",
+      "deadline": "官方帖 Ends Nov 30；定价页倒计时随时提前结束",
+      "keywords": [
+        "off",
+        "pricing"
+      ],
+      "end_keywords": [
+        "expired",
+        "sale ended"
+      ]
+    },
+    {
+      "id": "playground-free-plan",
+      "vendor": "Playground AI",
+      "title": "免费档：每 3 小时 5 张图 + 每月 6 积分",
+      "url": "https://playgroundai.com/pricing",
+      "region": "global",
+      "type": "free",
+      "group": "media",
+      "value": 5.0,
+      "gets": "Free 档每 3 小时最多 5 张图，每月 6 积分，模型访问受限",
+      "cond": "注册即用；超出需升级 Pro（$15/月，年付 $12/月）",
+      "deadline": "官方未写截止日（常设免费档）",
+      "keywords": [
+        "free",
+        "pricing"
+      ],
+      "end_keywords": [
+        "discontinued"
+      ]
+    },
+    {
+      "id": "llamaparse-free",
+      "vendor": "LlamaIndex",
+      "title": "LlamaParse 每账户每月 10,000 解析积分",
+      "url": "https://www.llamaindex.ai/pricing",
+      "region": "global",
+      "type": "quota",
+      "group": "tool",
+      "value": 6.0,
+      "gets": "每月 10,000 免费解析积分，每月重置不结转",
+      "cond": "注册账号即得；超出后 $1.50 / 1,000 积分；免费档支持 100 名用户",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "free",
+        "credits"
+      ],
+      "end_keywords": [
+        "discontinued"
+      ]
+    },
+    {
+      "id": "agenta-hobby",
+      "vendor": "Agenta",
+      "title": "Cloud Hobby 档：注册送 500 积分 + 每天 75 积分",
+      "url": "https://agenta.ai/pricing",
+      "region": "global",
+      "type": "quota",
+      "group": "tool",
+      "value": 4.6,
+      "gets": "新组织一次性 500 积分；每天 75 免费积分，每月最多发 10 天",
+      "cond": "注册 Agenta Cloud 组织；免费档限 2 个并发任务、1 个项目、2 名成员",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "free",
+        "credits"
+      ],
+      "end_keywords": [
+        "discontinued"
+      ]
+    },
+    {
+      "id": "colab-free-gpu",
+      "vendor": "Google Colab",
+      "title": "免费 T4 GPU 运行时（每日时长浮动）",
+      "url": "https://colab.research.google.com",
+      "region": "global",
+      "type": "free",
+      "group": "tool",
+      "value": 7.6,
+      "gets": "免费账号可用 T4 GPU 运行时，时长与可用性动态调整",
+      "cond": "Google 账号直接打开；长时间闲置会断开，高峰期可能拿不到 GPU",
+      "deadline": "官方未写截止日",
+      "keywords": [
+        "gpu",
+        "free"
+      ],
+      "end_keywords": [
+        "discontinued"
+      ]
+    }
+  ]
+}
